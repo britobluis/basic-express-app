@@ -13,11 +13,10 @@ app.use(express.static('public'));
 // {"hello": "JSON is cool"}
 // URL Encoded data
 // hello=URLEncoded+is+cool
-// Hace stringify de los datos y permite usarlos en javascript
 
-// Stringify JSON
-app.use(express.json()); // Se pueden usar los dos
-// Stringify URLEnconded
+// JSON
+app.use(express.json()); // Both can be setup
+// URLEnconded
 app.use(express.urlencoded({ extended: true }));
 
 //this is for images folder on path /images/imagename.jpg
@@ -39,7 +38,7 @@ app.post('/newItem', (req, res) => {
     res.send(req.body);
 });
 
-// Get un item del arreglo Data, se pueden pasar varios parametros /:categoria/:id 
+// Get item from array Data, to use multiple parameters /:categoria/:id 
 app.get('/item/:id', (req, res, next) => {
 
     // this is the middleware that pulls the data
@@ -53,14 +52,14 @@ app.get('/item/:id', (req, res, next) => {
     console.log(`Request type ${req.method}`);
 
     // everything above is middleware
-    res.send(data[user]); // Solo se puede hacer 1 respond por get, post, put, o delete.
+    res.send(data[user]); // only 1 res per endpoint
     next();
 }, (req, res) => {
     console.log('Did you get the right Data?');
 });
 
 app.post('/newItem2', (req, res) => {
-    res.send(`<h1>Post Request a new Item</h1>`); // Respuesta de HTML
+    res.send(`<h1>Post Request a new Item</h1>`); // HTML response
 });
 
 app.put('/item', (req, res) => {
@@ -71,7 +70,7 @@ app.delete('/item', (req, res) => {
     res.send(`A delete request with /item route on port ${port}`)
 });
 
-// Error handling function: Tiene que ir al final de todo y antes del app.listen
+// Error handling function: Always at the end before app.listen
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send(`Red alert! Red Alert!: <br><br> ${err.stack}`)
